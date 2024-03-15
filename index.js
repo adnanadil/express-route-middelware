@@ -32,8 +32,7 @@ app.use((req,res,next) => {
 
     const difference = new Date() - start
     console.log(` The time it took ${difference} mili seconds`)
-
-
+    
 })
 
 app.get('/', (req, res) => {
