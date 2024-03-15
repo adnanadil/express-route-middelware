@@ -20,6 +20,7 @@ const friends = [
 app.use(express.json());
 
 app.use((req,res,next) => {
+    console.log(`${req.method} ${req.url}`)
     const start = new Date()
     
     // If you don't add this the front end will keep waiting for the response as we don't move 
@@ -32,7 +33,7 @@ app.use((req,res,next) => {
 
     const difference = new Date() - start
     console.log(` The time it took ${difference} mili seconds`)
-    
+
 })
 
 app.get('/', (req, res) => {
