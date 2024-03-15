@@ -19,6 +19,23 @@ const friends = [
 // will do it without us having to convert the data into js 
 app.use(express.json());
 
+app.use((req,res,next) => {
+    const start = new Date()
+    
+    // If you don't add this the front end will keep waiting for the response as we don't move 
+    // forward
+    next()
+
+    // Since we come back to the first middleware before sending the response out we put the 
+    // calculate function here as next() sends to next middleware or the routes and it returns 
+    // back to middleware and excutes from after the run function to send res
+
+    const difference = new Date() - start
+    console.log(` The time it took ${difference} mili seconds`)
+
+
+})
+
 app.get('/', (req, res) => {
     res.send('Hello there')
 })
