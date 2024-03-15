@@ -13,6 +13,12 @@ const friends = [
     }
 ]
 
+// This a middleware which we are using ... since the data that we get from the 
+// web or client in the post request is json (that is when the client post/sends us data)
+// we cannot read this in JS so we have to convert to JS and having this middleware 
+// will do it without us having to convert the data into js 
+app.use(express.json());
+
 app.get('/', (req, res) => {
     res.send('Hello there')
 })
@@ -35,6 +41,42 @@ app.get('/friends/:value', (req,res) => {
     res.json(friends[id])
 })
 
+// Ok here we will set the POST function... that is if the user is posting something.
+// either this can be from a from fetch fucntion from the clinet or end can be done using 
+// postman.
+
+app.post('/friends', (req,res) => {
+    // the value that you are getting in req.body is JSON which we cannot read and understand
+    // to understand this code and convert the JSON to JS object we have to make use of middleware 
+    // which is called express.json() I have defined it at the start. 
+    // Tip: remove the middleware and see you will not be able to read the data.
+    // BETTER TO KEEP THIS LINE OF CODE AFTER CHECK AS IT DOES NOT HAVE A CHECK AS 
+    // THIS MIGHT CRASH THE SEVER. 
+    console.log(req.body.name)
+
+    // Ok now we have to make sure that the value name that is sent is correct and 
+    // not some nonsence value.
+    const name = req.body.name
+
+    if (name) {
+
+        // adding the new frind to my array (which is my database 😜) if the name is there
+        friends.push({
+            name: req.body.name,
+            id : friends.length
+        })
+        
+        res.status(200).json(friends)
+
+        // This is in place to prevent to res in one file
+        return
+    }
+
+    // Note we can send the status and the response together like below 
+    res.status(400).json("send a proper name")
+
+})
+
 app.listen(3000, () => {
-    console.log("Hello World")
+    console.log("server is running at local host 3000")
 })
